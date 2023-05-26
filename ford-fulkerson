@@ -68,7 +68,6 @@ def max_arc(arc, garf, set_ver):
 
 def min_flow(curpath):
     minfl = 10**10
-    # print(curpath)
     for i in curpath:
         if i[2] < minfl and i[2]!=0:
             minfl = i[2]
@@ -80,8 +79,6 @@ def update_garf(curpath, graf):
     for i in graf:
         if i in curpath:
             graf[graf.index(i)][2] -= minnn
-        # if i[2]==0:
-        #      graf.remove(i)
     return graf
 
 def update_ok(origin_list):
@@ -96,12 +93,10 @@ ok = True
 
 
 while ok:
-    # print('жопа')
     cur_arc = found_arc(origin_list)
     set_ver = set()
     curpath = []
     curpath.append(cur_arc)
-    # print(type(cur_arc))
     if cur_arc == None:
         break
     while cur_arc[2] != dring:
