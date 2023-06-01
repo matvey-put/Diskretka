@@ -1,0 +1,39 @@
+namespace Kommi
+{
+    class Programm
+    {
+
+        static void changing_size(List<List<int>> branches, )
+        {
+            for (int i = 0; i < branches.Count; i++)
+            {
+                for (int j = 0; j < branches[i].Count; j++)
+                {
+
+                }
+            }
+        }
+
+        static void Main()
+        { 
+            List<List<int>> branches = new List<List<int>>();
+            branches.Add(new List<int>() { 0, 1, 2, 3, 4, 5 });
+            branches.Add(new List<int>() { 1, -1, 12, 22, 28, 32 });
+            branches.Add(new List<int>() { 2, 12, -1, 10, 40, 20 });
+            branches.Add(new List<int>() { 3, 22, 10, -1, 50, 10 });
+            branches.Add(new List<int>() { 4, 28, 27,17, -1, 27 });
+            branches.Add(new List<int>() { 5, 32, 20, 10, 60, -1 });
+            while (branches != null)
+            {
+                for (int i = 0; i < branches.Count; i++)
+                {
+                    for (int j = 0; j < branches[i].Count; j++)
+                    {
+
+                    }
+                }
+            }
+        }
+
+    }
+}
