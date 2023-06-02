@@ -6,14 +6,22 @@ namespace Kommi
     class Programm
     {
 
-        static void changing_size(List<List<int>> branches)
+        static void changing_size(ref List<List<int>> branches, ref int max_zero,ref string max_zero_str)
         {
+            for (int i = 1; i < branches.Count; i++)
+            {
+                if (    (branches[i][0]== Convert.ToInt32(max_zero_str.Split(" ")[0]))    )
+                {
+                    branches.Remove(branches[i]);
+                }
+            }
             for (int i = 0; i < branches.Count; i++)
             {
                 for (int j = 0; j < branches[i].Count; j++)
                 {
-
+                    Console.Write(branches[i][j] + "\t");
                 }
+                Console.WriteLine();
             }
         }
 
@@ -76,13 +84,13 @@ namespace Kommi
         static void found_zero(List<List<int>> branches) 
         {
             Dictionary <string, int> zero_dict = new Dictionary<string, int> ();
-            for (int i = 0; i < branches.Count; i++)
+            for (int i = 1; i < branches.Count; i++)
             {
-                for (int j = 0; j < branches[i].Count; j++)
+                for (int j = 1; j < branches[i].Count; j++)
                 {
                     if ((branches[i][j] == 0) && (i != j))
                     {
-                        zero_dict.Add(i.ToString() + " " + j.ToString(), branches[i][j]);
+                        zero_dict.Add(branches[i][0].ToString()+ " " + branches[0][j].ToString() , branches[i][j]);
                     }
                 }
             }
@@ -130,6 +138,7 @@ namespace Kommi
             Console.WriteLine("Самый большой ноль");
             Console.WriteLine(max_zero);
             Console.WriteLine(max_zero_str);
+            changing_size(ref branches, ref max_zero, ref max_zero_str);
         }
         static void Main()
         { 
