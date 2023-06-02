@@ -1,9 +1,12 @@
+using System.Collections;
+using System.Collections.Generic;
+
 namespace Kommi
 {
     class Programm
     {
 
-        static void changing_size(List<List<int>> branches, )
+        static void changing_size(List<List<int>> branches)
         {
             for (int i = 0; i < branches.Count; i++)
             {
@@ -14,26 +17,156 @@ namespace Kommi
             }
         }
 
+        static void changing_branches(ref List<List<int>> branches, ref int branches_cnt)
+        {
+            int min_value = 1000000000;
+            for (int i = 1; i < branches.Count; i++)
+            {
+                for (int j = 1; j < branches[i].Count; j++)
+                {
+                    if ((branches[i][j] < min_value) && (i != j))
+                    {
+                        min_value = branches[i][j];
+                    }
+
+                }
+                Console.WriteLine(min_value);
+                for (int j = 1; j < branches[i].Count; j++)
+                {
+                    if (i != j)
+                    {
+                        branches[i][j] -= min_value;
+                    }
+                }
+                branches_cnt += min_value;
+                min_value = 1000000000;
+            }
+            for (int i = 0; i < branches.Count; i++)
+            {
+                for (int j = 0; j < branches[i].Count; j++)
+                {
+                    Console.Write(branches[i][j] + "\t");
+                }
+                Console.WriteLine();
+            }
+            min_value = 1000000000;
+            for (int i = 1; i < branches.Count; i++)
+            {
+                for (int j = 1; j < branches[i].Count; j++)
+                {
+                    if ((branches[j][i] < min_value) && (branches[j][i] != -1))
+                    {
+                        min_value = branches[j][i];
+                    }
+
+                }
+                Console.WriteLine(min_value);
+                for (int j = 1; j < branches[i].Count; j++)
+                {
+                    if (i != j)
+                    {
+                        branches[j][i] -= min_value;
+                    }
+                }
+                branches_cnt += min_value;
+                min_value = 1000000000;
+            }
+        }
+
+        static void found_zero(List<List<int>> branches) 
+        {
+            Dictionary <string, int> zero_dict = new Dictionary<string, int> ();
+            for (int i = 0; i < branches.Count; i++)
+            {
+                for (int j = 0; j < branches[i].Count; j++)
+                {
+                    if ((branches[i][j] == 0) && (i != j))
+                    {
+                        zero_dict.Add(i.ToString() + " " + j.ToString(), branches[i][j]);
+                    }
+                }
+            }
+            ICollection c = (ICollection)zero_dict.Keys;
+            foreach (string str in c)
+            {
+                int min_value = 1000000000;
+                for (int i = 1; i < branches[Convert.ToInt32(str.Split(" ")[0])].Count; i++)
+                {
+                    if ((branches[Convert.ToInt32(str.Split(" ")[0])][i]< min_value ) && (branches[Convert.ToInt32(str.Split(" ")[0])][i]!=-1) && (Convert.ToInt32(str.Split(" ")[1]) !=i) )
+                    {
+                        min_value = branches[Convert.ToInt32(str.Split(" ")[0])][i];
+                        
+                    }
+                }
+                Console.WriteLine(min_value);
+                zero_dict[str] += min_value;
+                min_value = 1000000000;
+                for (int i = 1; i < branches.Count; i++)
+                {
+                    if ((branches[i][Convert.ToInt32(str.Split(" ")[1])] < min_value) && (branches[i][Convert.ToInt32(str.Split(" ")[1])] != -1) && (Convert.ToInt32(str.Split(" ")[0]) != i))
+                    {
+                        min_value = branches[i][Convert.ToInt32(str.Split(" ")[1])];
+
+                    }
+                }
+                Console.WriteLine(min_value);
+
+                zero_dict[str] += min_value;
+            }
+            foreach (string str in c)
+            {
+                Console.WriteLine(str + ":" + zero_dict[str]);
+            }
+            int max_zero = 0;
+            string max_zero_str = "";
+            foreach (string str in c)
+            {
+               if (zero_dict[str] >= max_zero)
+                {
+                    max_zero_str = str;
+                    max_zero = zero_dict[str];
+                }
+            }
+            Console.WriteLine("Самый большой ноль");
+            Console.WriteLine(max_zero);
+            Console.WriteLine(max_zero_str);
+        }
         static void Main()
         { 
             List<List<int>> branches = new List<List<int>>();
+            int min_value = 1000000000;
+            int branches_cnt = 0;
             branches.Add(new List<int>() { 0, 1, 2, 3, 4, 5 });
             branches.Add(new List<int>() { 1, -1, 12, 22, 28, 32 });
             branches.Add(new List<int>() { 2, 12, -1, 10, 40, 20 });
             branches.Add(new List<int>() { 3, 22, 10, -1, 50, 10 });
             branches.Add(new List<int>() { 4, 28, 27,17, -1, 27 });
             branches.Add(new List<int>() { 5, 32, 20, 10, 60, -1 });
-            while (branches != null)
+            changing_branches(ref branches, ref branches_cnt);
+            Console.Write("Граница1: ");
+            Console.WriteLine(branches_cnt);
+            Console.WriteLine("Матрица после нижней и верхней: ");
+            for (int i = 0; i < branches.Count; i++)
             {
-                for (int i = 0; i < branches.Count; i++)
+                for (int j = 0; j < branches[i].Count; j++)
                 {
-                    for (int j = 0; j < branches[i].Count; j++)
-                    {
-
-                    }
+                    Console.Write(branches[i][j]+"\t");
                 }
+                Console.WriteLine();
             }
-        }
+            found_zero( branches);
+            //while (branches != null)
+            //{
+            //    for (int i = 0; i < branches.Count; i++)
+            //    {
+            //        for (int j = 0; j < branches[i].Count; j++)
+            //        {
 
+            //        }
+            //    }
+            //}
+        }
+            ////ctr+k ctr+c
+            ///////ctr+k ctr+u
+        }
     }
-}
