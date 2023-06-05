@@ -15,6 +15,37 @@ namespace Kommi
                     branches.Remove(branches[i]);
                 }
             }
+            int index_remove_stol = 0;
+            for (int i = 1; i < branches[0].Count; i++)
+            {
+                if ((branches[0][i] == Convert.ToInt32(max_zero_str.Split(" ")[1])))
+                {
+                    index_remove_stol = i;
+                }
+            }
+            Console.WriteLine("Номер индекса");
+            Console.WriteLine(index_remove_stol);
+            for (int i = 0; i < branches.Count; i++)
+            {
+                branches[i].Remove(branches[i][index_remove_stol]);
+            }
+            Console.WriteLine("max_zero_str");
+            Console.WriteLine(max_zero_str);
+            for (int i = 1; i < branches.Count; i++)
+            {
+                for (int j = 1; j < branches[i].Count; j++)
+                {
+                    if ((branches[i][0] == Convert.ToInt32(max_zero_str.Split(" ")[1])) && (branches[0][j] == Convert.ToInt32(max_zero_str.Split(" ")[0])))
+                    {
+                        branches[i][j] = -1;
+                    }
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Изменения");
             for (int i = 0; i < branches.Count; i++)
             {
                 for (int j = 0; j < branches[i].Count; j++)
@@ -23,6 +54,9 @@ namespace Kommi
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine("Пиво");
+            Console.WriteLine();
+
         }
 
         static void changing_branches(ref List<List<int>> branches, ref int branches_cnt)
@@ -32,23 +66,26 @@ namespace Kommi
             {
                 for (int j = 1; j < branches[i].Count; j++)
                 {
-                    if ((branches[i][j] < min_value) && (i != j))
+                    if ((branches[i][j] < min_value) && (branches[i][0] != branches[0][j]) && (branches[i][j]!=-1))
                     {
                         min_value = branches[i][j];
                     }
 
                 }
-                Console.WriteLine(min_value);
+                
                 for (int j = 1; j < branches[i].Count; j++)
                 {
-                    if (i != j)
+                    if ((branches[i][0]!= branches[0][j]) && (branches[i][j]!=-1) )
                     {
                         branches[i][j] -= min_value;
                     }
                 }
                 branches_cnt += min_value;
+                Console.WriteLine("Мин значеник");
+                Console.WriteLine(min_value);
                 min_value = 1000000000;
             }
+            Console.WriteLine("Игристое");
             for (int i = 0; i < branches.Count; i++)
             {
                 for (int j = 0; j < branches[i].Count; j++)
@@ -58,6 +95,7 @@ namespace Kommi
                 Console.WriteLine();
             }
             min_value = 1000000000;
+
             for (int i = 1; i < branches.Count; i++)
             {
                 for (int j = 1; j < branches[i].Count; j++)
@@ -68,27 +106,38 @@ namespace Kommi
                     }
 
                 }
-                Console.WriteLine(min_value);
                 for (int j = 1; j < branches[i].Count; j++)
                 {
-                    if (i != j)
+                    if (branches[j][i]!=-1)
                     {
                         branches[j][i] -= min_value;
                     }
                 }
+                Console.WriteLine("Мин значеник");
+                Console.WriteLine(min_value);
                 branches_cnt += min_value;
                 min_value = 1000000000;
             }
+            Console.WriteLine("Матрица после нижней и верхней: ");
+            for (int i = 0; i < branches.Count; i++)
+            {
+                for (int j = 0; j < branches[i].Count; j++)
+                {
+                    Console.Write(branches[i][j] + "\t");
+                }
+                Console.WriteLine();
+            }
+
         }
 
-        static void found_zero(List<List<int>> branches) 
+        static void found_zero(ref List<List<int>> branches) 
         {
             Dictionary <string, int> zero_dict = new Dictionary<string, int> ();
             for (int i = 1; i < branches.Count; i++)
             {
                 for (int j = 1; j < branches[i].Count; j++)
                 {
-                    if ((branches[i][j] == 0) && (i != j))
+                    if ((branches[i][j] == 0))
                     {
                         zero_dict.Add(branches[i][0].ToString()+ " " + branches[0][j].ToString() , branches[i][j]);
                     }
@@ -98,27 +147,62 @@ namespace Kommi
             foreach (string str in c)
             {
                 int min_value = 1000000000;
-                for (int i = 1; i < branches[Convert.ToInt32(str.Split(" ")[0])].Count; i++)
+
+                for (int i = 1; i < branches.Count; i++)
                 {
-                    if ((branches[Convert.ToInt32(str.Split(" ")[0])][i]< min_value ) && (branches[Convert.ToInt32(str.Split(" ")[0])][i]!=-1) && (Convert.ToInt32(str.Split(" ")[1]) !=i) )
+                    
+                    if (branches[i][0]== Convert.ToInt32(str.Split(" ")[0]))
                     {
-                        min_value = branches[Convert.ToInt32(str.Split(" ")[0])][i];
-                        
+                        for (int j = 1; j < branches[i].Count; j++)
+                        {
+                            if((branches[i][j]< min_value) && (branches[i][j] != -1) && (Convert.ToInt32(str.Split(" ")[1])!= branches[0][j]))
+                            {
+                                
+                                min_value = branches[i][j];
+                            }
+                        }
                     }
+                    //if ((branches[Convert.ToInt32(str.Split(" ")[0])][i]< min_value ) && (branches[Convert.ToInt32(str.Split(" ")[0])][i]!=-1) && (Convert.ToInt32(str.Split(" ")[1]) !=i) )
+                    //{
+                    //    min_value = branches[Convert.ToInt32(str.Split(" ")[0])][i];
+
+                    //}
+                    
                 }
-                Console.WriteLine(min_value);
                 zero_dict[str] += min_value;
                 min_value = 1000000000;
                 for (int i = 1; i < branches.Count; i++)
                 {
-                    if ((branches[i][Convert.ToInt32(str.Split(" ")[1])] < min_value) && (branches[i][Convert.ToInt32(str.Split(" ")[1])] != -1) && (Convert.ToInt32(str.Split(" ")[0]) != i))
+
+                    //Console.WriteLine();
+                    //for (int k = 0; k < branches.Count; k++)
+                    //{
+                    //    for (int j = 0; j < branches[k].Count; j++)
+                    //    {
+                    //        Console.Write(branches[k][j] + "\t");
+                    //    }
+                    //    Console.WriteLine();
+                    //}
+                    if (branches[0][i] == Convert.ToInt32(str.Split(" ")[1]))
                     {
-                        min_value = branches[i][Convert.ToInt32(str.Split(" ")[1])];
+                        for (int j = 1; j < branches[i].Count; j++)
+                        {
+                            if ((branches[j][i] < min_value) && (branches[j][i] != -1) && (Convert.ToInt32(str.Split(" ")[0]) != branches[j][0]))
+                            {
 
+                                min_value = branches[j][i];
+
+
+                            }
+                        }
                     }
-                }
-                Console.WriteLine(min_value);
+                    //if ((branches[i][Convert.ToInt32(str.Split(" ")[1])] < min_value) && (branches[i][Convert.ToInt32(str.Split(" ")[1])] != -1) && (Convert.ToInt32(str.Split(" ")[0]) != i))
+                    //{
+                    //    min_value = branches[i][Convert.ToInt32(str.Split(" ")[1])];
 
+                    //}
+
+                }
                 zero_dict[str] += min_value;
             }
             foreach (string str in c)
@@ -135,9 +219,6 @@ namespace Kommi
                     max_zero = zero_dict[str];
                 }
             }
-            Console.WriteLine("Самый большой ноль");
-            Console.WriteLine(max_zero);
-            Console.WriteLine(max_zero_str);
             changing_size(ref branches, ref max_zero, ref max_zero_str);
         }
         static void Main()
@@ -151,7 +232,9 @@ namespace Kommi
             branches.Add(new List<int>() { 3, 22, 10, -1, 50, 10 });
             branches.Add(new List<int>() { 4, 28, 27,17, -1, 27 });
             branches.Add(new List<int>() { 5, 32, 20, 10, 60, -1 });
-            changing_branches(ref branches, ref branches_cnt);
+
+           
+
             Console.Write("Граница1: ");
             Console.WriteLine(branches_cnt);
             Console.WriteLine("Матрица после нижней и верхней: ");
@@ -163,17 +246,29 @@ namespace Kommi
                 }
                 Console.WriteLine();
             }
-            found_zero( branches);
-            //while (branches != null)
-            //{
-            //    for (int i = 0; i < branches.Count; i++)
-            //    {
-            //        for (int j = 0; j < branches[i].Count; j++)
-            //        {
+            
+            Console.WriteLine();
+            Console.WriteLine();
 
-            //        }
-            //    }
-            //}
+
+            while (branches.Count!=2)
+            {
+                changing_branches(ref branches, ref branches_cnt);
+                found_zero(ref branches);
+
+
+            }
+            
+            
+            Console.WriteLine("ИТОГ");
+            for (int i = 0; i < branches.Count; i++)
+            {
+                for (int j = 0; j < branches[i].Count; j++)
+                {
+                    Console.Write(branches[i][j] + "\t");
+                }
+                Console.WriteLine();
+            }
         }
             ////ctr+k ctr+c
             ///////ctr+k ctr+u
