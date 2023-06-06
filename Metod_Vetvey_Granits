@@ -42,19 +42,8 @@ namespace Kommi
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("Изменения");
-            for (int i = 0; i < branches.Count; i++)
-            {
-                for (int j = 0; j < branches[i].Count; j++)
-                {
-                    Console.Write(branches[i][j] + "\t");
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine("Пиво");
+            
+            
             Console.WriteLine();
 
         }
@@ -75,7 +64,7 @@ namespace Kommi
                 
                 for (int j = 1; j < branches[i].Count; j++)
                 {
-                    if ((branches[i][0]!= branches[0][j]) && (branches[i][j]!=-1) )
+                    if ((branches[i][0]!= branches[0][j]) && (branches[i][j] != -1) )
                     {
                         branches[i][j] -= min_value;
                     }
@@ -85,7 +74,8 @@ namespace Kommi
                 Console.WriteLine(min_value);
                 min_value = 1000000000;
             }
-            Console.WriteLine("Игристое");
+
+            
             for (int i = 0; i < branches.Count; i++)
             {
                 for (int j = 0; j < branches[i].Count; j++)
@@ -100,7 +90,7 @@ namespace Kommi
             {
                 for (int j = 1; j < branches[i].Count; j++)
                 {
-                    if ((branches[j][i] < min_value) && (branches[j][i] != -1))
+                    if ((branches[j][i] < min_value) && (branches[j][i] != -1) && (branches[j][0] != branches[0][i]))
                     {
                         min_value = branches[j][i];
                     }
@@ -113,20 +103,11 @@ namespace Kommi
                         branches[j][i] -= min_value;
                     }
                 }
-                Console.WriteLine("Мин значеник");
-                Console.WriteLine(min_value);
+                
                 branches_cnt += min_value;
                 min_value = 1000000000;
             }
-            Console.WriteLine("Матрица после нижней и верхней: ");
-            for (int i = 0; i < branches.Count; i++)
-            {
-                for (int j = 0; j < branches[i].Count; j++)
-                {
-                    Console.Write(branches[i][j] + "\t");
-                }
-                Console.WriteLine();
-            }
+            
 
         }
 
@@ -150,39 +131,27 @@ namespace Kommi
 
                 for (int i = 1; i < branches.Count; i++)
                 {
-                    
-                    if (branches[i][0]== Convert.ToInt32(str.Split(" ")[0]))
+
+                    if (branches[i][0] == Convert.ToInt32(str.Split(" ")[0]))
                     {
                         for (int j = 1; j < branches[i].Count; j++)
                         {
-                            if((branches[i][j]< min_value) && (branches[i][j] != -1) && (Convert.ToInt32(str.Split(" ")[1])!= branches[0][j]))
+                            if ((branches[i][j] < min_value) && (branches[i][j] != -1) && (Convert.ToInt32(str.Split(" ")[1]) != branches[0][j]) && (Convert.ToInt32(str.Split(" ")[0]) != branches[i][0]))
                             {
-                                
                                 min_value = branches[i][j];
                             }
                         }
                     }
-                    //if ((branches[Convert.ToInt32(str.Split(" ")[0])][i]< min_value ) && (branches[Convert.ToInt32(str.Split(" ")[0])][i]!=-1) && (Convert.ToInt32(str.Split(" ")[1]) !=i) )
-                    //{
-                    //    min_value = branches[Convert.ToInt32(str.Split(" ")[0])][i];
-
-                    //}
+                    
                     
                 }
-                zero_dict[str] += min_value;
+                if (min_value != 1000000000)
+                { zero_dict[str] += min_value; }
                 min_value = 1000000000;
                 for (int i = 1; i < branches.Count; i++)
                 {
 
-                    //Console.WriteLine();
-                    //for (int k = 0; k < branches.Count; k++)
-                    //{
-                    //    for (int j = 0; j < branches[k].Count; j++)
-                    //    {
-                    //        Console.Write(branches[k][j] + "\t");
-                    //    }
-                    //    Console.WriteLine();
-                    //}
+                    
                     if (branches[0][i] == Convert.ToInt32(str.Split(" ")[1]))
                     {
                         for (int j = 1; j < branches[i].Count; j++)
@@ -196,14 +165,11 @@ namespace Kommi
                             }
                         }
                     }
-                    //if ((branches[i][Convert.ToInt32(str.Split(" ")[1])] < min_value) && (branches[i][Convert.ToInt32(str.Split(" ")[1])] != -1) && (Convert.ToInt32(str.Split(" ")[0]) != i))
-                    //{
-                    //    min_value = branches[i][Convert.ToInt32(str.Split(" ")[1])];
-
-                    //}
+                    
 
                 }
-                zero_dict[str] += min_value;
+                if (min_value != 1000000000)
+                { zero_dict[str] += min_value; }
             }
             foreach (string str in c)
             {
@@ -233,11 +199,6 @@ namespace Kommi
             branches.Add(new List<int>() { 4, 28, 27,17, -1, 27 });
             branches.Add(new List<int>() { 5, 32, 20, 10, 60, -1 });
 
-           
-
-            Console.Write("Граница1: ");
-            Console.WriteLine(branches_cnt);
-            Console.WriteLine("Матрица после нижней и верхней: ");
             for (int i = 0; i < branches.Count; i++)
             {
                 for (int j = 0; j < branches[i].Count; j++)
@@ -255,22 +216,13 @@ namespace Kommi
             {
                 changing_branches(ref branches, ref branches_cnt);
                 found_zero(ref branches);
-
-
             }
             
             
-            Console.WriteLine("ИТОГ");
-            for (int i = 0; i < branches.Count; i++)
-            {
-                for (int j = 0; j < branches[i].Count; j++)
-                {
-                    Console.Write(branches[i][j] + "\t");
-                }
-                Console.WriteLine();
-            }
+           
+            Console.WriteLine("Расстояние");
+            Console.WriteLine(branches_cnt);
         }
-            ////ctr+k ctr+c
-            ///////ctr+k ctr+u
+            
         }
     }
